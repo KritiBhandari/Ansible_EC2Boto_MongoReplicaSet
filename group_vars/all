@@ -1,0 +1,8 @@
+
+# Group_vars global file
+mongodb_datadir: /data
+mongodb_logdir: /log
+mongodb_journaldir: /journal
+#mongo_admin_pass: "{{lookup('password', 'ADMIN_PASS chars=digits length=8')}}"
+replica_set: rs0
+mongod_port: 27017

@@ -1,0 +1,7 @@
+- name: Create the file to add the current node to the replica set
+  template: src=repset_add.j2 dest=/tmp/repset2_add.js
+
+- name: Initialize the replication set on the primary
+  shell: /usr/bin/mongo /tmp/repset2_add.js
+  args:
+    creates: addNodeToReplicaset

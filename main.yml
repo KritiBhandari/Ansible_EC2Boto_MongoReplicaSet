@@ -1,0 +1,23 @@
+- name: allrole
+  hosts: all
+  roles: 
+    - role: allrole
+  become: yes
+  become_method : sudo
+
+- name: Primary
+  hosts: primary
+  roles:
+    - role: primary
+  become: yes
+  become_user: mongodb
+  #become_method : sudo
+
+- name: Secondary
+  hosts: secondary
+  roles:
+    - role: secondary
+  become: yes
+  become_user: mongodb
+  #become_method : sudo
+

@@ -1,0 +1,37 @@
+---  
+- name: MongoDB user 
+  user: name=mongodb
+
+- name: Add 10gen official apt source to sources list
+  apt_key: keyserver=keyserver.ubuntu.com id=7F0CEB10
+  register: keyserver
+
+- shell: echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
+  when: keyserver|changed
+
+- name: apt-get update
+  apt: update_cache=yes
+
+- name: Install MondoDB
+  apt: name={{item}} state=present
+  with_items:
+    - mongodb-10gen
+
+- name: make directories 
+  file:
+    path: "{{ item }}"
+    owner: mongodb
+    group: mongodb
+    state: directory 
+  with_items:
+    - "{{mongodb_datadir}}"
+    - "{{mongodb_logdir}}"
+    - "{{mongodb_journaldir}}"
+
+- name: config mongodb
+  template: src=mongodb.conf.j2 dest=/etc/mongodb.conf
+  notify: restart MongoDB
+
+
+
+
